@@ -1,5 +1,3 @@
-import { BsSuitcaseLg } from "react-icons/bs";
-
 const Jumbotron = () => {
   return (
     // <div className="bg-[#F5FCFF]">
@@ -27,7 +25,11 @@ const Jumbotron = () => {
 
           {/* right */}
           <div>
-            <img src="/positive.png" alt="thumbnail" className="ml-10 w-400 h-auto" />
+            <img
+              src="/positive.png"
+              alt="thumbnail"
+              className="ml-10 h-auto w-400"
+            />
           </div>
         </div>
       </div>
