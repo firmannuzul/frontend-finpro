@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +20,7 @@ import { axiosInstance } from "@/lib/axios";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import { useAuth } from "@/stores/auth";
 
 const formSchema = z.object({
   email: z.email(),
@@ -30,6 +31,8 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { onAuthSuccess } = useAuth();
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,6 +61,13 @@ export function LoginForm({
         redirect: false,
       });
 
+      // onAuthSuccess({
+      //   user: {
+      //     email: result.data.email,
+      //     objectId: result.data.objectId,
+      //     userToken: result.data["user-token"],
+      //   },
+      // });
       toast.success("Login success");
       router.push("/");
     },

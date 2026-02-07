@@ -12,7 +12,8 @@ const Navbar = () => {
       <Image src="/next.svg" alt="logo" width={120} height={50} />
 
       <div className="flex gap-20 text-base font-medium text-[#111111]">
-        <p>Home</p>
+        <Link href="/">Home</Link>
+        <Link href="/jobs">Job</Link>
         <p>Find Jobs</p>
         <p>Find Employers</p>
         <p>About Us</p>

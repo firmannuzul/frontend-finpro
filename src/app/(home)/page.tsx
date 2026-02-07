@@ -1,8 +1,8 @@
-import Navbar from "@/components/Navbar";
-import Jumbotron from "./components/Jumbotron";
-import BlogCard from "./components/BlogCard";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import Explore from "./components/Explore";
+import Jumbotron from "./components/Jumbotron";
+import JobList from "@/components/JobList";
 
 const Home = () => {
   return (
@@ -11,13 +11,7 @@ const Home = () => {
       <Jumbotron />
       <Explore />
       <hr className="mx-6 border-blue-700" />
-
-
-      <div className="container mx-auto grid grid-cols-3 gap-8 p-4">
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-      </div>
+      <JobList take={3} />
       <Footer />
     </div>
   );
