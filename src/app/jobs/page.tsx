@@ -6,7 +6,9 @@ const Job = () => {
   return (
     <div>
       <Navbar />
-      <JobList take={9} />
+      <div className="mx-auto max-w-7xl px-6">
+        <JobList take={9} />
+      </div>
       <Footer />
     </div>
   );

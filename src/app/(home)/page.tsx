@@ -1,17 +1,21 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import Explore from "./components/Explore";
-import Jumbotron from "./components/Jumbotron";
-import JobList from "@/components/JobList";
+import Card from "./components/Card";
+import { CategorySection } from "./components/CategorySection";
+import CompanyLogo from "./components/CompanyLogo";
+import { CTAbanner } from "./components/CTAbanner";
+import HeroSection from "./components/HeroSection";
 
 const Home = () => {
   return (
-    <div>
+    // <div>
+    <div className="bg-background min-h-screen">
       <Navbar />
-      <Jumbotron />
-      <Explore />
-      <hr className="mx-6 border-blue-700" />
-      <JobList take={3} />
+      <HeroSection />
+      <CompanyLogo />
+      <CategorySection />
+      <CTAbanner />
+      <Card take={6} />
       <Footer />
     </div>
   );
