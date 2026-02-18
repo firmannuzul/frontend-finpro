@@ -208,7 +208,10 @@ export function LoginForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <a href="/register">Sign up</a>
+                Don&apos;t have an account? <a href="/register">Sign Up</a>
+              </FieldDescription>
+              <FieldDescription className="text-center">
+                <a href="/forgot-password">Forgot Password</a>
               </FieldDescription>
             </FieldGroup>
           </form>
