@@ -8,6 +8,9 @@ export interface Job {
   salaryMin: string;
   salaryMax: string;
   description: string;
+  experience: string;
+  requirement: string;
+  responsibility: string;
   thumbnail: string;
   hasPreselection: boolean;
   isPublished: boolean;

@@ -3,7 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* @custom-variant dark (.dark &); */
 
 
 @theme inline {
@@ -121,6 +120,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+
   }
   body {
     @apply bg-background text-foreground;
