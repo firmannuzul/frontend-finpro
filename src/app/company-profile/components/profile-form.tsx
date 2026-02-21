@@ -9,7 +9,7 @@ import { axiosInstance } from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Lock } from "lucide-react";
+import { Briefcase, Globe, Lock, MapPin } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -17,27 +17,15 @@ import { toast } from "sonner";
 import z from "zod";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { format } from "date-fns";
-import { IoIosDocument } from "react-icons/io";
-import { CiCalendarDate } from "react-icons/ci";
+import { TbFileDescription } from "react-icons/tb";
 
 const formSchemaProfile = z.object({
-  name: z.string().optional(),
-
-  gender: z.enum(["L", "P"]).optional(),
-
-  // gender: z.enum(["MALE", "FEMALE"]).optional(),
-
-  dob: z.string().optional(),
-
-  phone: z.string().optional(),
-
-  address: z.string().optional(),
-
-  lastEducation: z.string().optional(),
-
-  cvResumePath: z.instanceof(File).optional(),
-  photoPath: z.instanceof(File).optional(),
+  companyName: z.string().optional(),
+  description: z.string().optional(),
+  websiteUrl: z.string().optional(),
+  industry: z.string().optional(),
+  location: z.string().optional(),
+  logoPath: z.instanceof(File).optional(),
 });
 
 const formSchemaChangePassword = z
@@ -51,17 +39,15 @@ const formSchemaChangePassword = z
     message: "Passwords do not match",
   });
 
-const UpdateProfile = () => {
+const UpdateCompanyProfile = () => {
   const router = useRouter();
   const session = useSession();
   const queryClient = useQueryClient();
 
   const { data: profile } = useQuery({
-    // queryKey: ["profile"],
-    queryKey: ["me"],
+    queryKey: ["profile-company"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/user/profile", {
-        // const res = await axiosInstance.get("/user/me/profile", {
+      const res = await axiosInstance.get("/user/profile-company", {
         headers: {
           Authorization: `Bearer ${session.data?.user.accessToken}`,
         },
@@ -73,15 +59,12 @@ const UpdateProfile = () => {
   const formProfile = useForm<z.infer<typeof formSchemaProfile>>({
     resolver: zodResolver(formSchemaProfile),
     defaultValues: {
-      name: "",
-      gender: undefined,
-      // dob: "",
-      dob: undefined,
-      phone: "",
-      address: "",
-      lastEducation: "",
-      cvResumePath: undefined,
-      photoPath: undefined,
+      companyName: "",
+      description: "",
+      websiteUrl: "",
+      industry: "",
+      location: "",
+      logoPath: undefined,
     },
   });
 
@@ -99,32 +82,29 @@ const UpdateProfile = () => {
       mutationFn: async (data: z.infer<typeof formSchemaProfile>) => {
         const formData = new FormData();
 
-        if (data.name) formData.append("name", data.name);
-        if (data.gender) formData.append("gender", data.gender);
-        if (data.dob) {
-          formData.append("dob", data.dob);
-        }
-        if (data.phone) formData.append("phone", data.phone);
-        if (data.address) formData.append("address", data.address);
-        if (data.lastEducation)
-          formData.append("lastEducation", data.lastEducation);
+        if (data.companyName) formData.append("companyName", data.companyName);
+        if (data.description) formData.append("description", data.description);
+        if (data.websiteUrl) formData.append("websiteUrl", data.websiteUrl);
+        if (data.industry) formData.append("industry", data.industry);
+        if (data.location) formData.append("location", data.location);
+        if (data.logoPath) formData.append("photo", data.logoPath);
 
-        if (data.photoPath) formData.append("photo", data.photoPath);
-        if (data.cvResumePath) formData.append("cv", data.cvResumePath);
-
-        const res = await axiosInstance.patch("/user/updateprofile", formData, {
-          headers: {
-            Authorization: `Bearer ${session.data?.user.accessToken}`,
+        const res = await axiosInstance.patch(
+          "/user/updateprofile/companyprofile",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${session.data?.user.accessToken}`,
+            },
           },
-        });
+        );
 
         return res.data;
       },
       onSuccess: () => {
         toast.success("Update profile success");
-        // queryClient.invalidateQueries({ queryKey: ["profile"] });
-        queryClient.invalidateQueries({ queryKey: ["me"] });
-        router.push("/profile");
+        queryClient.invalidateQueries({ queryKey: ["profile-company"] });
+        router.push("/company-profile");
       },
       onError: (error: AxiosError<{ message: string }>) => {
         toast.error(error.response?.data.message ?? "Something went wrong!");
@@ -178,65 +158,54 @@ const UpdateProfile = () => {
       <div className="mx-auto max-w-4xl space-y-12 px-6 pt-24 pb-12">
         <div className="text-center">
           <h1 className="font-heading text-foreground text-4xl font-bold">
-            Update Profile
+            Update Company Profile
           </h1>
           <p className="text-muted-foreground mt-3 text-lg">
-            Manage your personal and professional information
+            Manage your company information
           </p>
         </div>
 
+        {/* ============================== */}
+        {/* PROFILE HEADER — data current  */}
+        {/* ============================== */}
         {profile && (
           <div className="border-border bg-card flex items-center gap-5 rounded-xl border p-6 shadow-sm">
-            {/* Avatar */}
-            {profile.photoPath ? (
+            {profile.logoPath ? (
               <Image
-                src={profile.photoPath}
+                src={profile.logoPath}
                 alt="Profile"
                 width={150}
                 height={150}
               />
             ) : (
               <div className="bg-primary text-primary-foreground flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-2xl font-bold">
-                {profile.name?.[0]?.toUpperCase() ?? "?"}
+                {profile.companyName?.[0]?.toUpperCase() ?? "?"}
               </div>
             )}
 
-            {/* Info */}
             <div className="space-y-1">
               <h2 className="text-foreground text-xl font-bold">
-                {profile.name || "Your Name"}
+                {profile.companyName || "Your Company"}
               </h2>
-              <p className="text-muted-foreground flex items-center gap-2 text-sm">
-                <CiCalendarDate size={20} className="text-[#5E3BEE]" />
-                <span>
-                  {" "}
-                  {profile?.dob
-                    ? format(new Date(profile.dob), "dd MMM yyyy")
-                    : "Date of birth not set"}
-                </span>
+
+              <p className="text-muted-foreground flex items-center gap-1 text-sm">
+                <Briefcase className="h-3.5 w-3.5" />
+                {profile.industry || "Industry not set"}
               </p>
 
-              <p className="text-muted-foreground text-sm">
-                📞 {profile.phone || "Phone not set"}
+              <p className="text-muted-foreground flex items-center gap-1 text-sm">
+                <TbFileDescription className="h-3.5 w-3.5" />
+                {profile.description || "Industry not set"}
               </p>
 
-              <p className="text-muted-foreground text-sm">
-                🎓 {profile.lastEducation || "Education not set"}
+              <p className="text-muted-foreground flex items-center gap-1 text-sm">
+                <MapPin className="h-3.5 w-3.5" />
+                {profile.location || "Location not set"}
               </p>
 
-              <p className="text-muted-foreground text-sm">
-                📍 {profile.address || "Address not set"}
-              </p>
-
-              <p className="text-muted-foreground text-sm">
-                <a
-                  href={profile.cvResumePath}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-[#5E3BEE] underline"
-                >
-                  View uploaded CV (PDF)
-                </a>
+              <p className="text-muted-foreground flex items-center gap-1 text-sm">
+                <Globe className="h-3.5 w-3.5" />
+                {profile.websiteUrl || "Website not set"}
               </p>
             </div>
           </div>
@@ -250,19 +219,19 @@ const UpdateProfile = () => {
           <div className="space-y-8">
             <div>
               <h2 className="font-heading text-foreground text-2xl font-semibold">
-                Personal Information
+                Company Information
               </h2>
               <div className="mt-2 h-1 w-12 rounded-full bg-gradient-to-r from-[#5E3BEE] to-[#5E3BEE]" />
             </div>
-            {/* NAME */}
 
+            {/* NAME */}
             <Controller
-              name="name"
+              name="companyName"
               control={formProfile.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Full Name</FieldLabel>
-                  <Input {...field} placeholder="Your full name" />
+                  <FieldLabel>Company Name</FieldLabel>
+                  <Input {...field} placeholder="Your company name" />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -270,21 +239,44 @@ const UpdateProfile = () => {
               )}
             />
 
-            {/* GENDER */}
             <Controller
-              name="gender"
+              name="industry"
               control={formProfile.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Gender</FieldLabel>
-                  <select
+                  <FieldLabel>Industry Field</FieldLabel>
+                  <Input {...field} placeholder="Your company field" />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="websiteUrl"
+              control={formProfile.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Website</FieldLabel>
+                  <Input {...field} placeholder="Your company website url" />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="description"
+              control={formProfile.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Description</FieldLabel>
+                  <textarea
                     {...field}
                     className="w-full rounded border px-3 py-2"
-                  >
-                    <option value="">Select gender</option>
-                    <option value="L">Male</option>
-                    <option value="P">Female</option>
-                  </select>
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -292,39 +284,8 @@ const UpdateProfile = () => {
               )}
             />
 
-            {/* DOB */}
             <Controller
-              name="dob"
-              control={formProfile.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Date of Birth</FieldLabel>
-                  <Input {...field} type="date" />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            {/* PHONE */}
-            <Controller
-              name="phone"
-              control={formProfile.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Phone Number</FieldLabel>
-                  <Input {...field} placeholder="08xxxxxxxxxx" />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            {/* ADDRESS */}
-            <Controller
-              name="address"
+              name="location"
               control={formProfile.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
@@ -340,57 +301,18 @@ const UpdateProfile = () => {
               )}
             />
 
-            {/* LAST EDUCATION */}
-            <Controller
-              name="lastEducation"
-              control={formProfile.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Last Education</FieldLabel>
-                  <Input
-                    {...field}
-                    placeholder="Bachelor Degree in Computer Science"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
             {/* PHOTO */}
             <Controller
-              name="photoPath"
+              name="logoPath"
               control={formProfile.control}
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Profile Photo</FieldLabel>
+                  <FieldLabel>Company Photo</FieldLabel>
                   <Input
                     type="file"
                     accept="image/*"
                     onChange={(e) =>
-                      formProfile.setValue("photoPath", e.target.files?.[0])
-                    }
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            {/* CV */}
-            <Controller
-              name="cvResumePath"
-              control={formProfile.control}
-              render={({ fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>CV / Resume</FieldLabel>
-                  <Input
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={(e) =>
-                      formProfile.setValue("cvResumePath", e.target.files?.[0])
+                      formProfile.setValue("logoPath", e.target.files?.[0])
                     }
                   />
                   {fieldState.invalid && (
@@ -500,4 +422,4 @@ const UpdateProfile = () => {
   );
 };
 
-export default UpdateProfile;
+export default UpdateCompanyProfile;

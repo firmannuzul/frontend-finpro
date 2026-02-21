@@ -1,15 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Upload } from "lucide-react";
-import z from "zod";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios";
-import { toast } from "sonner";
-import { AxiosError } from "axios";
+import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldError,
@@ -17,8 +8,15 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { axiosInstance } from "@/lib/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
 
 export const formSchema = z.object({
   fullName: z.string(),
@@ -26,19 +24,13 @@ export const formSchema = z.object({
   phoneNumber: z.string(),
   address: z.string(),
   lastEducation: z.string(),
-
-  // jobPostingId: z.string(),
-  // userId: z.string(),
+  expectedSalary: z.string(),
 
   cvFile: z.instanceof(File).refine((file) => file.type === "application/pdf", {
     message: "CV must be PDF",
   }),
 });
 
-// export function JobApplicationForm({
-//   className,
-//   ...props
-// }: React.ComponentProps<"div">) {
 type JobApplicationFormProps = {
   jobPostingId: string;
 } & React.ComponentProps<"div">;
@@ -60,8 +52,7 @@ export function JobApplicationForm({
       phoneNumber: "",
       address: "",
       lastEducation: "",
-      // jobPostingId: "",
-      // userId: "",
+      expectedSalary: "",
       cvFile: undefined,
     },
   });
@@ -75,13 +66,11 @@ export function JobApplicationForm({
       formData.append("phoneNumber", data.phoneNumber);
       formData.append("address", data.address);
       formData.append("lastEducation", data.lastEducation);
+      formData.append("expectedSalary", data.expectedSalary);
 
-      // formData.append("jobPostingId", data.jobPostingId);
       formData.append("jobPostingId", jobPostingId);
 
-      // formData.append("userId", data.userId);
-
-      formData.append("cvFilePath", data.cvFile); // 🔥 match backend
+      formData.append("cvFilePath", data.cvFile);
 
       await axiosInstance.post(`/applicant/`, formData, {
         headers: { Authorization: `Bearer ${session.data?.user.accessToken}` },
@@ -91,7 +80,7 @@ export function JobApplicationForm({
     onSuccess: () => {
       toast.success("Apply job success!");
       queryClient.invalidateQueries({ queryKey: ["applicant"] });
-      router.push("/jobs");
+      router.push("/my-application");
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message ?? "Something went wrong!");
@@ -116,7 +105,7 @@ export function JobApplicationForm({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="cvFile">Resume</FieldLabel>
+                  <FieldLabel htmlFor="cvFile">Resume/CV</FieldLabel>
                   <Input
                     id="cvFile"
                     type="file"
@@ -231,7 +220,29 @@ export function JobApplicationForm({
                       id="lastEducation"
                       type="lastEducation"
                       aria-invalid={fieldState.invalid}
-                      placeholder="S1"
+                      placeholder="Bachelor Degree in Computer Science"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+              <Controller
+                name="expectedSalary"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="expectedSalary">
+                      Expected Salary
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="expectedSalary"
+                      type="expectedSalary"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="10000000"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -252,10 +263,6 @@ export function JobApplicationForm({
               {isPending ? "Loading" : "Submit Application"}
             </Button>
           </Field>
-
-          <p className="text-muted-foreground text-center text-xs">
-            We'll get back to you within 7 days
-          </p>
         </FieldGroup>
       </form>
     </div>

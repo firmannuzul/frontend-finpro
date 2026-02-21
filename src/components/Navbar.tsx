@@ -3,6 +3,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { GiSharkFin } from "react-icons/gi";
@@ -17,7 +18,7 @@ const Navbar = () => {
     queryKey: ["profile"],
     enabled: !!session?.user,
     queryFn: async () => {
-      const res = await axiosInstance.get("/user/profile", {
+      const res = await axiosInstance.get("/user/me/profile", {
         headers: {
           Authorization: `Bearer ${session?.user?.accessToken}`,
         },
@@ -25,6 +26,9 @@ const Navbar = () => {
       return res.data;
     },
   });
+
+  const avatarUrl =
+    profile?.companyProfile?.logoPath || profile?.applicantProfile?.photoPath;
 
   // const session = useSession();
   return (
@@ -43,51 +47,57 @@ const Navbar = () => {
           <Link href="/about-us">About Us</Link>
         </div>
 
-        {/* {session.status === "unauthenticated" ? (
-          <Link href="/login">
-            <Button className="rounded-lg border border-[#5E3BEE] bg-[#5E3BEE] px-8 py-6 font-bold text-white hover:bg-[#8A05BE]">
-              Sign In
-            </Button>
-          </Link>
-        ) : (
-          <Button
-            variant="destructive"
-            onClick={() => signOut()}
-            className="rounded-lg border border-[#5E3BEE] bg-[#5E3BEE] px-8 py-6 font-bold text-white"
-          >
-            Sign Out
-          </Button>
-        )} */}
-
         <div className="flex items-center gap-4">
-          {/* Avatar hanya muncul kalau login */}
           {status === "authenticated" && (
             <div className="relative">
-              <img
-                src={profile?.photoPath || "/avatar-placeholder.png"}
+              <Image
+                src={avatarUrl || "/avatar-placeholder.png"}
                 alt="Profile"
+                width={70}
+                height={70}
                 onClick={() => setOpenProfile(!openProfile)}
-                className="h-10 w-10 cursor-pointer rounded-full border object-cover"
+                className="cursor-pointer rounded-full border object-cover"
               />
 
               {openProfile && (
                 <div className="absolute top-12 right-0 w-48 rounded-lg border bg-white shadow-lg">
-                  <Link
-                    href="/profile"
-                    onClick={() => setOpenProfile(false)}
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Update Profile
-                  </Link>
+                  {session?.user?.role === "APPLICANT" && (
+                    <>
+                      <Link
+                        href="/my-application"
+                        onClick={() => setOpenProfile(false)}
+                        className="block px-4 py-2 hover:bg-gray-100"
+                      >
+                        My Application
+                      </Link>
+
+                      <Link
+                        href="/profile"
+                        onClick={() => setOpenProfile(false)}
+                        className="block px-4 py-2 hover:bg-gray-100"
+                      >
+                        Update Profile
+                      </Link>
+                    </>
+                  )}
+
+                  {session?.user?.role === "ADMIN" && (
+                    <Link
+                      href="/company-profile"
+                      onClick={() => setOpenProfile(false)}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Update Company Profile
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
           )}
 
-          {/* Tombol Login / Logout tetap ada */}
           {status === "unauthenticated" ? (
             <Link href="/login">
-              <Button className="rounded-lg border border-[#5E3BEE] bg-[#5E3BEE] px-8 py-6 font-bold text-white hover:bg-[#8A05BE]">
+              <Button className="cursor-pointer rounded-lg border border-[#5E3BEE] bg-[#5E3BEE] px-8 py-6 font-bold text-white hover:bg-[#8A05BE]">
                 Sign In
               </Button>
             </Link>
@@ -95,7 +105,7 @@ const Navbar = () => {
             <Button
               variant="destructive"
               onClick={() => signOut()}
-              className="rounded-lg border border-[#5E3BEE] bg-[#5E3BEE] px-8 py-6 font-bold text-white"
+              className="cursor-pointer rounded-lg border border-[#5E3BEE] bg-[#5E3BEE] px-8 py-6 font-bold text-white"
             >
               Sign Out
             </Button>

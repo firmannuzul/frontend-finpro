@@ -15,8 +15,8 @@ import { useAuth } from "@/stores/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Link } from "lucide-react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { GiSharkFin } from "react-icons/gi";
@@ -126,7 +126,7 @@ export function LoginForm({
           </div>
 
           {/* Header */}
-          <div className="mb-10">
+          <div>
             <h1 className="font-heading text-foreground text-2xl font-bold">
               Welcome back!
             </h1>
@@ -141,13 +141,6 @@ export function LoginForm({
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FieldGroup>
-              {/* <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
-                <p className="text-muted-foreground text-balance">
-                  Login to your account
-                </p>
-              </div> */}
-
               <Controller
                 name="email"
                 control={form.control}
