@@ -9,29 +9,29 @@ const Footer = () => {
   return (
     <footer className="mt-16 border-t bg-[#0e1111]">
       <div className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-12 md:grid-cols-2">
-          <div className="flex flex-col justify-baseline">
-            <div className="flex items-center">
-              <GiSharkFin className="h-17 w-17 text-[#B3B3B3]" />
+        <div className="flex flex-col gap-16 md:flex-row md:justify-between">
+          <div className="flex flex-col md:max-w-md">
+            <div className="flex items-center gap-3">
+              <GiSharkFin className="h-10 w-10 text-[#B3B3B3]" />
               <span className="text-2xl font-bold text-[#B3B3B3]">Shark</span>
             </div>
-            <p className="mt-2 py-2 text-lg text-white">
+            <p className="mt-6 text-sm leading-relaxed text-white">
               Find your dream job or hire the best talent. Connect employers
               with job seekers.
             </p>
 
-            <div className="flex flex-col gap-3 text-[#FFFFFF]">
-              <div className="mt-4 flex items-center">
-                <CiMail size={18} />
-                <p className="ml-1">contact@shark.com</p>
+            <div className="mt-8 flex flex-col gap-4 text-[#FFFFFF]">
+              <div className="flex items-center gap-3">
+                <CiMail size={20} className="shrink-0" />
+                <p className="text-sm">contact@shark.com</p>
               </div>
-              <div className="flex items-center">
-                <BsTelephone size={18} />
-                <p className="ml-1">+62 822 1236 6613</p>
+              <div className="flex items-center gap-3">
+                <BsTelephone size={20} className="shrink-0" />
+                <p className="text-sm">+62 822 1236 6613</p>
               </div>
-              <div className="flex items-center">
-                <MdOutlinePlace size={31} />
-                <p className="ml-1 text-sm">
+              <div className="flex items-start gap-3">
+                <MdOutlinePlace size={20} className="mt-0.5 shrink-0" />
+                <p className="text-sm">
                   Jl. Sultan Iskandar Muda, Gandaria, Kec. Kebayoran Lama, Kota
                   Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12240
                 </p>
@@ -39,67 +39,63 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2">
-            <div className="ml-30 flex flex-col">
-              <h1 className="mt-4 text-2xl font-bold text-[#B3B3B3]">
-                Job Seekers
-              </h1>
+          <div className="flex flex-col gap-12 md:flex-row md:gap-16">
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-[#B3B3B3]">Job Seekers</h3>
 
-              <div className="flex flex-col gap-2 text-[#FFFFFF]">
+              <div className="mt-6 flex flex-col gap-3 text-[#FFFFFF]">
                 <a
                   href="/about"
-                  className="mt-4 underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Browse Job
                 </a>
                 <a
                   href="/about"
-                  className="underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Saved Job
                 </a>
                 <a
                   href="/about"
-                  className="underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Browse Job
                 </a>
                 <a
                   href="/about"
-                  className="underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Saved Job
                 </a>
               </div>
             </div>
 
-            <div className="ml-20 flex flex-col">
-              <h1 className="mt-4 text-2xl font-bold text-[#B3B3B3]">
-                Employers
-              </h1>
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-[#B3B3B3]">Employers</h3>
 
-              <div className="flex flex-col gap-2 text-[#FFFFFF]">
+              <div className="mt-6 flex flex-col gap-3 text-[#FFFFFF]">
                 <a
                   href="/about"
-                  className="mt-4 underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Post a Job
                 </a>
                 <a
                   href="/about"
-                  className="underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Browse Candidates
                 </a>
                 <a
                   href="/about"
-                  className="underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Post a Job
                 </a>
                 <a
                   href="/about"
-                  className="underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
                 >
                   Browse Candidates
                 </a>

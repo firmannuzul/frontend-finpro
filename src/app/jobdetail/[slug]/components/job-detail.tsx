@@ -8,10 +8,6 @@ import { cache } from "react";
 import SharePopup from "./SharePopup";
 import { JobApplicationForm } from "./job-application-form";
 
-// interface JobDetailProps {
-//   params: Promise<{ slug: string }>;
-// }
-
 interface JobDetailProps {
   params: { slug: string };
 }
@@ -108,9 +104,7 @@ const JobDetail = async (props: JobDetailProps) => {
                 <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
                   <div className="bg-secondary rounded-lg p-3">
                     <p className="text-muted-foreground text-xs">Salary</p>
-                    {/* <p className="text-foreground font-semibold">
-                      Rp. {job.salaryMin} - Rp.{job.salaryMax}
-                    </p> */}
+
                     <p className="text-foreground font-semibold">
                       {formatRupiah(Number(job.salaryMin))} –{" "}
                       {formatRupiah(Number(job.salaryMax))}

@@ -1,9 +1,9 @@
-import { SignupForm } from "./components/signup-form";
+import { SignupFormAdmin } from "./components/signup-form";
 
 const Register = () => {
   return (
     <div>
-      <SignupForm />
+      <SignupFormAdmin />
     </div>
   );
 };

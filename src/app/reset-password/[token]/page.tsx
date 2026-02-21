@@ -32,11 +32,8 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="bg-muted flex min-h-svh items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        {" "}
-        <ResetPasswordForm token={token} />
-      </div>
+    <div>
+      <ResetPasswordForm token={token} />
     </div>
   );
 }

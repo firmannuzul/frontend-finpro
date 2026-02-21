@@ -26,7 +26,9 @@ import { z } from "zod";
 
 const formSchema = z
   .object({
+    name: z.string(),
     email: z.email(),
+    phone: z.string(),
     password: z.string().min(5, "Password must be at least 5 characters."),
     confirmPassword: z.string(),
   })
@@ -35,7 +37,7 @@ const formSchema = z
     message: "Passwords do not match.",
   });
 
-export function SignupForm({
+export function SignupFormAdmin({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -44,7 +46,9 @@ export function SignupForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
     },
@@ -52,11 +56,13 @@ export function SignupForm({
 
   const { mutateAsync: register, isPending } = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
-      const result = await axiosInstance.post("/auth/register", {
+      const result = await axiosInstance.post("/auth/register-admin", {
+        name: data.name,
         email: data.email,
+        phone: data.phone,
         password: data.password,
         confirmPassword: data.confirmPassword,
-        role: "APPLICANT",
+        role: "ADMIN",
       });
       return result.data;
     },
@@ -124,15 +130,15 @@ export function SignupForm({
           {/* Header */}
           <div>
             <h1 className="font-heading text-foreground text-2xl font-bold">
-              Create your account
+              Register Company
             </h1>
 
             <h1 className="mt-1">
               <Link
-                href="/register/admin"
+                href="/register"
                 className="flex items-center gap-2 text-base font-medium text-[hsl(270,60%,50%)] transition hover:underline"
               >
-                <span>Looking to Hire?</span>
+                <span>Looking for Job?</span>
                 <FaArrowRight className="text-sm" />
               </Link>
             </h1>
@@ -145,6 +151,26 @@ export function SignupForm({
           >
             <FieldGroup>
               <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="name">Full Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="name"
+                      type="name"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Company Name"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+              <Controller
                 name="email"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -156,6 +182,26 @@ export function SignupForm({
                       type="email"
                       aria-invalid={fieldState.invalid}
                       placeholder="example@mail.com"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+              <Controller
+                name="phone"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
+                    <Input
+                      {...field}
+                      id="phone"
+                      type="phone"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Phone Number"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
