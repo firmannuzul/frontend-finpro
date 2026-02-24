@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BsTelephone } from "react-icons/bs";
 import { CiMail } from "react-icons/ci";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
@@ -39,66 +40,98 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-12 md:flex-row md:gap-16">
+          <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4 md:gap-16">
+            {/* Col 1 */}
             <div className="flex flex-col">
-              <h3 className="text-lg font-bold text-[#B3B3B3]">Job Seekers</h3>
-
-              <div className="mt-6 flex flex-col gap-3 text-[#FFFFFF]">
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+              <h3 className="text-lg font-bold text-[#B3B3B3]">Candidate</h3>
+              <div className="mt-6 flex flex-col gap-3 text-white">
+                <Link
+                  href="/jobs"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Browse Job
-                </a>
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  Browse Jobs
+                </Link>
+                <Link
+                  href="/companies"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Saved Job
-                </a>
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  Browse Employers
+                </Link>
+                <Link
+                  href="/my-application"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Browse Job
-                </a>
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
-                >
-                  Saved Job
-                </a>
+                  Candidate Dashboard
+                </Link>
               </div>
             </div>
 
+            {/* Col 2 */}
             <div className="flex flex-col">
               <h3 className="text-lg font-bold text-[#B3B3B3]">Employers</h3>
+              <div className="mt-6 flex flex-col gap-3 text-white">
+                <Link
+                  href="/about"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
+                >
+                  Post a Job
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
+                >
+                  Manage Job
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
+                >
+                  Employers Dashboard
+                </Link>
+              </div>
+            </div>
 
-              <div className="mt-6 flex flex-col gap-3 text-[#FFFFFF]">
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+            {/* Col 3 */}
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-[#B3B3B3]">Company</h3>
+              <div className="mt-6 flex flex-col gap-3 text-white">
+                <Link
+                  href="/about-us"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Post a Job
-                </a>
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  About Us
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Browse Candidates
-                </a>
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  Contact
+                </Link>
+              </div>
+            </div>
+
+            {/* Col 4 */}
+            <div className="flex flex-col">
+              <h3 className="text-lg font-bold text-[#B3B3B3]">Support</h3>
+              <div className="mt-6 flex flex-col gap-3 text-white">
+                <Link
+                  href="/legal"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Post a Job
-                </a>
-                <a
-                  href="/about"
-                  className="text-sm underline-offset-4 transition hover:text-[#820AD1] hover:underline"
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/legal"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
-                  Browse Candidates
-                </a>
+                  Terms of Service
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-sm hover:text-[#5E3BEE] hover:underline"
+                >
+                  FAQs
+                </Link>
               </div>
             </div>
           </div>

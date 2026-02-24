@@ -2,27 +2,19 @@
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 
-import {
-  Building2,
-  MapPin,
-  Clock,
-  ChevronRight,
-  Search,
-  Building2Icon,
-  Map,
-} from "lucide-react";
+import { Building2, ChevronRight, Clock, MapPin, Search } from "lucide-react";
 
-import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
+import { axiosInstance } from "@/lib/axios";
 import { Application } from "@/types/application";
 import { useSession } from "next-auth/react";
-import { axiosInstance } from "@/lib/axios";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
 const ApplicationForm = () => {
   const { data: session } = useSession();
@@ -223,7 +215,6 @@ const ApplicationForm = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </main>
   );

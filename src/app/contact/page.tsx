@@ -1,16 +1,15 @@
 import Footer from "@/components/Footer";
-import JobList from "@/components/JobList";
 import Navbar from "@/components/Navbar";
+import { ContactPage } from "./components/page";
 
-const Job = () => {
+const Legal = () => {
   return (
     <div>
       <Navbar />
-
-      <JobList take={9} />
+      <ContactPage />
       <Footer />
     </div>
   );
 };
 
-export default Job;
+export default Legal;
