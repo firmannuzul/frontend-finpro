@@ -5,6 +5,7 @@ import { axiosInstance } from "@/lib/axios";
 import { Job } from "@/types/job";
 import { PageableResponse } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
 
@@ -28,17 +29,20 @@ const Card = ({ take }: PaginationListProps) => {
     },
   });
   return (
-    <div className="mx-auto max-w-7xl px-6">
+    <div className="mx-auto mt-8 max-w-7xl px-6">
       <div className="flex items-center justify-between">
         <h2 className="font-heading text-foreground text-3xl font-bold md:text-4xl">
           Latest <span className="text-[#5E3BEE]">Jobs</span> Post
         </h2>
-        <button
-          type="button"
-          className="text-primary text-sm font-medium hover:underline"
-        >
-          {"Browse All >"}
-        </button>
+      
+        <Link href="/jobs">
+          <button
+            type="button"
+            className="text-primary text-sm font-medium hover:underline cursor-pointer"
+          >
+            Browse All &gt;
+          </button>
+        </Link>
       </div>
 
       {/* <div className="container mx-auto grid grid-cols-3 gap-8 p-4 border"> */}

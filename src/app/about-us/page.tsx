@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Target, Briefcase, Award, Heart, Globe } from "lucide-react";
+import { Award, Briefcase, Globe, Heart, Target, Users } from "lucide-react";
 const stats = [
   { label: "Job Listings", value: "10K+", icon: Briefcase },
   { label: "Companies", value: "500+", icon: Globe },
@@ -43,8 +43,8 @@ const AboutUs = () => {
         </h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
           We're on a mission to revolutionize the way people find jobs and
-          companies discover talent. We've been bridging the gap
-          between opportunity and ambition.
+          companies discover talent. We've been bridging the gap between
+          opportunity and ambition.
         </p>
       </section>
       {/* Stats */}
@@ -53,7 +53,7 @@ const AboutUs = () => {
           {stats.map((stat) => (
             <Card key={stat.label} className="text-center">
               <CardContent className="pt-6">
-                <stat.icon className="text-[#5E3BEE] mx-auto mb-3 h-8 w-8" />
+                <stat.icon className="mx-auto mb-3 h-8 w-8 text-[#5E3BEE]" />
                 <p className="text-foreground text-3xl font-bold">
                   {stat.value}
                 </p>
@@ -75,7 +75,7 @@ const AboutUs = () => {
             {values.map((item) => (
               <Card key={item.title}>
                 <CardContent className="pt-6">
-                  <item.icon className="text-[#5E3BEE] mb-4 h-10 w-10" />
+                  <item.icon className="mb-4 h-10 w-10 text-[#5E3BEE]" />
                   <h3 className="text-foreground mb-2 text-xl font-semibold">
                     {item.title}
                   </h3>
@@ -97,8 +97,8 @@ const AboutUs = () => {
           <div className="grid grid-cols-2 gap-6 md:grid-cols-2">
             {team.map((member) => (
               <div key={member.name} className="text-center">
-                <div className="bg-[#5E3BEE]/10 mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full">
-                  <span className="text-[#5E3BEE] text-lg font-bold">
+                <div className="mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-[#5E3BEE]/10">
+                  <span className="text-lg font-bold text-[#5E3BEE]">
                     {member.initials}
                   </span>
                 </div>

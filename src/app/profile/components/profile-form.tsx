@@ -7,19 +7,17 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { axiosInstance } from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { format } from "date-fns";
 import { Lock } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { CiCalendarDate } from "react-icons/ci";
 import { toast } from "sonner";
 import z from "zod";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import { format } from "date-fns";
-import { IoIosDocument } from "react-icons/io";
-import { CiCalendarDate } from "react-icons/ci";
 
 const formSchemaProfile = z.object({
   name: z.string().optional(),

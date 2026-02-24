@@ -7,17 +7,16 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { axiosInstance } from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Briefcase, Globe, Lock, MapPin } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { TbFileDescription } from "react-icons/tb";
 import { toast } from "sonner";
 import z from "zod";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import { TbFileDescription } from "react-icons/tb";
 
 const formSchemaProfile = z.object({
   companyName: z.string().optional(),
