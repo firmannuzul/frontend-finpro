@@ -3,7 +3,8 @@ import { ArrowRight } from "lucide-react";
 
 export function DualRoleCTA() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24">
+    // <section className="mx-auto max-w-7xl px-6 py-24">
+    <section className="container mx-auto px-6 py-24">
       <div className="grid gap-8 md:grid-cols-2">
         {/* Candidate Card */}
         <div className="border-border bg-card flex flex-col justify-center rounded-2xl border p-12 shadow-sm transition-all hover:shadow-md">

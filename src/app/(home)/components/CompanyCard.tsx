@@ -5,6 +5,8 @@ import { axiosInstance } from "@/lib/axios";
 import type { Companies } from "@/types/companies";
 import { PageableResponse, PaginationMeta } from "@/types/pagination";
 import { Building2, MapPin } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const CompaniesCard = () => {
@@ -61,15 +63,33 @@ const CompaniesCard = () => {
 
   return (
     <div className="bg-background">
-      <section className="mx-auto max-w-7xl px-6 py-5 md:px-7">
+      {/* <section className="mx-auto max-w-7xl px-6 py-5 md:px-7"> */}
+      <section className="container mx-auto px-6 py-5 md:px-7">
         {/* Section heading */}
-        <div className="mb-12 text-start">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Trusted Companies <span className="text-[#5E3BEE]">Hiring</span> Now
-          </h2>
-          <p className="text-muted-foreground mt-2 text-sm">
-            Discover fast-growing companies across top industries
-          </p>
+
+        <div className="mb-12">
+          <div className="flex items-start justify-between">
+            {/* LEFT SIDE */}
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight">
+                Trusted Companies <span className="text-[#5E3BEE]">Hiring</span>{" "}
+                Now
+              </h2>
+              <p className="text-muted-foreground mt-2 text-sm">
+                Discover fast-growing companies across top industries
+              </p>
+            </div>
+
+            {/* RIGHT SIDE */}
+            <Link href="/companies">
+              <button
+                type="button"
+                className="text-primary cursor-pointer text-sm font-medium hover:underline"
+              >
+                Browse All &gt;
+              </button>
+            </Link>
+          </div>
         </div>
 
         {loading && (
@@ -91,10 +111,12 @@ const CompaniesCard = () => {
                     <div className="mb-4 flex items-center gap-4">
                       <div className="bg-primary/10 flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl">
                         {company.logoPath ? (
-                          <img
+                          <Image
                             src={company.logoPath}
                             alt={company.companyName}
-                            className="h-full w-full object-cover"
+                            width={100}
+                            height={100}
+                            className="h-full w-full object-contain"
                           />
                         ) : (
                           <span className="text-primary text-xl font-bold">
@@ -127,7 +149,7 @@ const CompaniesCard = () => {
                     {/* CTA */}
                     <Button
                       variant="outline"
-                      className="group-hover:border-primary group-hover:text-primary mt-auto w-full font-semibold transition"
+                      className="group-hover:border-primary group-hover:text-primary mt-auto w-full cursor-pointer font-semibold transition"
                       onClick={() => {
                         const url = company.websiteUrl.startsWith("http")
                           ? company.websiteUrl

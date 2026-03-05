@@ -7,21 +7,21 @@ import { PageableResponse } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
+
 import SearchFilterBar from "./Filter";
 import JobCard from "./JobCard";
 
-type JobListProps = {
+type Props = {
   take: number;
 };
 
 const industries = ["All", "Technology", "Finance", "Education"];
 const locations = ["All", "Jakarta", "Bandung", "Surabaya"];
 
-const JobList = ({ take }: JobListProps) => {
+const JobList = ({ take }: Props) => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
 
-  // 🔁 renamed logically (UI still industry)
   const [category, setCategory] = useQueryState("category", {
     defaultValue: "All",
   });
@@ -30,18 +30,48 @@ const JobList = ({ take }: JobListProps) => {
     defaultValue: "All",
   });
 
-  const [debouncedValue] = useDebounceValue(search, 500);
+  const [timeRange, setTimeRange] = useQueryState("range", {
+    defaultValue: "",
+  });
+
+  const [customFrom, setCustomFrom] = useQueryState("from", {
+    defaultValue: "",
+  });
+
+  const [customTo, setCustomTo] = useQueryState("to", {
+    defaultValue: "",
+  });
+
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "desc",
+  });
+
+  const [debouncedSearch] = useDebounceValue(search, 400);
 
   const { data: jobs, isPending } = useQuery({
-    queryKey: ["jobs", page, debouncedValue, category, location],
+    queryKey: [
+      "jobs",
+      page,
+      debouncedSearch,
+      category,
+      location,
+      timeRange,
+      customFrom,
+      customTo,
+      sortOrder,
+    ],
     queryFn: async () => {
       const res = await axiosInstance.get<PageableResponse<Job>>("/job", {
         params: {
           page,
           take,
-          search: debouncedValue,
-          category: category !== "All" ? category : undefined, // ✅ FIX HERE
+          search: debouncedSearch,
+          category: category !== "All" ? category : undefined,
           location: location !== "All" ? location : undefined,
+          timeRange: timeRange || undefined,
+          from: timeRange === "custom" ? customFrom : undefined,
+          to: timeRange === "custom" ? customTo : undefined,
+          sortOrder,
         },
       });
 
@@ -49,46 +79,67 @@ const JobList = ({ take }: JobListProps) => {
     },
   });
 
-  const onClickPagination = (page: number) => {
-    setPage(page);
-  };
-
   return (
     <>
-      <SearchFilterBar
-        search={search}
-        onSearchChange={(value) => {
-          setSearch(value);
-          setPage(1);
-        }}
-        industry={category} // UI still says industry
-        onIndustryChange={(value) => {
-          setCategory(value); // but API uses category
-          setPage(1);
-        }}
-        location={location}
-        onLocationChange={(value) => {
-          setLocation(value);
-          setPage(1);
-        }}
-        industries={industries}
-        locations={locations}
-      />
+      {/* <section className="mx-auto max-w-7xl px-4 pt-10 pb-6"> */}
+      <section className="container mx-auto px-4 pt-10 pb-6">
+        <h1 className="mb-2 text-3xl font-bold md:text-4xl">All Jobs</h1>
+        <p className="text-muted-foreground">
+          Browse all registered jobs on the platform.
+        </p>
+      </section>
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
-        {isPending && (
-          <div className="col-span-full my-12 text-center">
-            <p className="text-2xl font-bold">Loading...</p>
-          </div>
-        )}
+      {/* <div className="mx-auto flex max-w-7xl gap-6 px-4 pb-8"> */}
+      <div className="container mx-auto flex gap-6 px-4 pb-8">
+        <SearchFilterBar
+          search={search}
+          onSearchChange={(v) => {
+            setSearch(v);
+            setPage(1);
+          }}
+          location={location}
+          onLocationChange={setLocation}
+          category={category}
+          onCategoryChange={setCategory}
+          timeRange={timeRange}
+          onTimeRangeChange={setTimeRange}
+          customFrom={customFrom}
+          customTo={customTo}
+          onCustomFromChange={setCustomFrom}
+          onCustomToChange={setCustomTo}
+          sortOrder={sortOrder}
+          onSortOrderChange={setSortOrder}
+          locations={locations}
+          categories={industries}
+          onReset={() => {
+            setSearch("");
+            setCategory("All");
+            setLocation("All");
+            setTimeRange("");
+            setCustomFrom("");
+            setCustomTo("");
+            setSortOrder("desc");
+            setPage(1);
+          }}
+        />
 
-        {jobs?.data.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
+        <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {isPending && (
+            <div className="col-span-full py-12 text-center font-semibold">
+              Loading jobs...
+            </div>
+          )}
+
+          {jobs?.data.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
       </div>
 
       {jobs?.meta && (
-        <PaginationSection meta={jobs.meta} onClick={onClickPagination} />
+        <div className="mt-10 flex cursor-pointer justify-center pl-[25rem]">
+          <PaginationSection meta={jobs.meta} onClick={setPage} />
+        </div>
       )}
     </>
   );

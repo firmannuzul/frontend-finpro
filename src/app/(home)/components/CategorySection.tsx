@@ -69,7 +69,8 @@ const categories1 = [
 export function CategorySection() {
   return (
     <section className="bg-primary/2 mt-8 py-10">
-      <div className="mx-auto max-w-7xl px-6">
+      {/* <div className="mx-auto max-w-7xl px-6"> */}
+      <div className="container mx-auto px-6">
         <div className="text-start">
           <h2 className="font-heading text-foreground text-3xl font-bold md:text-4xl">
             Explore by <span className="text-[#5E3BEE]">category</span>

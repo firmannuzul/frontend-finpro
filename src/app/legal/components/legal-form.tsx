@@ -6,7 +6,8 @@ import { FileText, Shield } from "lucide-react";
 export function LegalPage() {
   return (
     <main className="bg-background min-h-screen">
-      <div className="mx-auto max-w-4xl px-6 pt-24 pb-12">
+      {/* <div className="mx-auto max-w-4xl px-6 pt-24 pb-12"> */}
+      <div className="container mx-auto px-6 pt-24 pb-12">
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="font-heading text-foreground text-4xl font-bold">

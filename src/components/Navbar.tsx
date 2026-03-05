@@ -58,12 +58,12 @@ const Navbar = () => {
           {status === "authenticated" && (
             <div className="relative">
               <Image
-                src={avatarUrl || "/avatar-placeholder.png"}
+                src={avatarUrl || "/avatar-placeholder.avif"}
                 alt="Profile"
                 width={70}
                 height={70}
                 onClick={() => setOpenProfile(!openProfile)}
-                className="cursor-pointer rounded-full border object-cover"
+                className="ring-primary/20 h-18 w-18 cursor-pointer rounded-full border object-contain"
               />
 
               {openProfile && (

@@ -37,7 +37,8 @@ const AboutUs = () => {
     <div className="bg-background min-h-screen">
       <Navbar />
       {/* Hero */}
-      <section className="mx-auto max-w-4xl px-6 py-16 text-center md:px-12 md:py-24">
+      {/* <section className="mx-auto max-w-4xl px-6 py-16 text-center md:px-12 md:py-24"> */}
+      <section className="container mx-auto px-6 py-16 text-center md:px-12 md:py-24">
         <h1 className="text-foreground mb-4 text-4xl font-bold md:text-5xl">
           About <span className="text-[#5E3BEE]">Shark</span>
         </h1>

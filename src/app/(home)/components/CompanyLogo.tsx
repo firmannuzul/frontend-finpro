@@ -16,7 +16,8 @@ const companies = [
 export default function CompanyLogo() {
   return (
     <section className="border-border bg-background w-full border-y py-24">
-      <div className="mx-auto max-w-6xl px-6 text-center">
+      {/* <div className="mx-auto max-w-6xl px-6 text-center"> */}
+      <div className="mx-auto max-w-7xl px-6 text-center">
         <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-12">
           {companies.map((company, i) => (
             <div
