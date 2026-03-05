@@ -114,7 +114,7 @@ const ApplicationForm = () => {
     <main>
       <Navbar />
 
-      <div className="from-background to-secondary/20 min-h-screen bg-gradient-to-b px-6 py-12">
+      <div className="from-background to-secondary/20 min-h-screen px-6 py-12">
         {/* <div className="mx-auto max-w-7xl"> */}
         <div className="container mx-auto">
           {/* Header */}
