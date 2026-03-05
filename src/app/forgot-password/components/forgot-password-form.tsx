@@ -61,14 +61,10 @@ export function ForgotPasswordForm({
   }
 
   return (
-    // <div className={cn("flex flex-col gap-6", className)} {...props}>
     <div
       className={cn("grid min-h-screen lg:grid-cols-2", className)}
       {...props}
     >
-      {/* <Card className="overflow-hidden p-0"> */}
-      {/* <CardContent> */}
-
       {/* Left Panel - Blue Gradient with Branding */}
       <div className="relative hidden overflow-hidden lg:block">
         {/* Gradient Background */}
@@ -156,8 +152,6 @@ export function ForgotPasswordForm({
               </Field>
             </FieldGroup>
           </form>
-          {/* </CardContent> */}
-          {/* </Card> */}
         </div>
       </div>
     </div>

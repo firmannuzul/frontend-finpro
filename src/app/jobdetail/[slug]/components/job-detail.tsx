@@ -71,7 +71,7 @@ const JobDetail = async (props: JobDetailProps) => {
 
                       <div className="flex items-center gap-1">
                         <SharePopup
-                          url={`${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`}
+                          url={`${process.env.NEXTAUTH_URL}/${slug}`}
                         />
                       </div>
                     </div>

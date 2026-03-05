@@ -9,7 +9,8 @@ import { MdOutlinePlace } from "react-icons/md";
 const Footer = () => {
   return (
     <footer className="mt-16 border-t bg-[#0e1111]">
-      <div className="container mx-auto max-w-7xl px-6 py-16">
+      {/* <div className="container mx-auto max-w-7xl px-6 py-16"> */}
+      <div className="container mx-auto px-6 py-16">
         <div className="flex flex-col gap-16 md:flex-row md:justify-between">
           <div className="flex flex-col md:max-w-md">
             <div className="flex items-center gap-3">
@@ -71,19 +72,19 @@ const Footer = () => {
               <h3 className="text-lg font-bold text-[#B3B3B3]">Employers</h3>
               <div className="mt-6 flex flex-col gap-3 text-white">
                 <Link
-                  href="/about"
+                  href="/"
                   className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
                   Post a Job
                 </Link>
                 <Link
-                  href="/about"
+                  href="/"
                   className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
                   Manage Job
                 </Link>
                 <Link
-                  href="/about"
+                  href="/"
                   className="text-sm hover:text-[#5E3BEE] hover:underline"
                 >
                   Employers Dashboard
@@ -139,7 +140,8 @@ const Footer = () => {
       </div>
 
       <div className="mx-auto border-t border-white py-5 text-sm text-gray-300">
-        <div className="mx-auto flex max-w-7xl px-6 py-5">
+        {/* <div className="mx-auto flex max-w-7xl px-6 py-5"> */}
+        <div className="container mx-auto flex px-6 py-5">
           <div className="flex w-full items-center justify-between">
             <p className="text-md text-[#B3B3B3]">
               © {new Date().getFullYear()} Shark. All rights reserved.

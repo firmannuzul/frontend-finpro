@@ -253,7 +253,11 @@ export function SignupFormAdmin({
               />
 
               <Field>
-                <Button type="submit" form="form-register">
+                <Button
+                  type="submit"
+                  form="form-register"
+                  className="cursor-pointer"
+                >
                   Create Account
                 </Button>
               </Field>
@@ -265,6 +269,7 @@ export function SignupFormAdmin({
                   variant="outline"
                   type="button"
                   onClick={() => signIn("google", { callbackUrl: "/" })}
+                  className="cursor-pointer"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path

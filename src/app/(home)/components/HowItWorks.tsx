@@ -33,9 +33,9 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    // <section className="py-24">
-    <section className="bg-primary/2 py-12 md:py-16 mt-8">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="bg-primary/2 mt-8 py-12 md:py-16">
+      {/* <div className="mx-auto max-w-7xl px-6"> */}
+      <div className="container mx-auto px-6">
         <div className="mb-16 text-center">
           <h2 className="font-heading text-foreground text-3xl font-bold md:text-4xl">
             How <span className="text-[#5E3BEE]">Shark</span> works

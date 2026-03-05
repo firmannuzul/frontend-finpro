@@ -7,6 +7,8 @@ import { axiosInstance } from "@/lib/axios";
 import type { Companies } from "@/types/companies";
 import { PageableResponse, PaginationMeta } from "@/types/pagination";
 import { Building2, MapPin, Search } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const industries = [
@@ -22,16 +24,15 @@ const industries = [
 
 const locations = ["All", "Jakarta", "Bandung", "Surabaya"];
 
-const CompaniesPage = () => {
+export default function CompaniesPage() {
   const [meta, setMeta] = useState<PaginationMeta | null>(null);
   const [page, setPage] = useState(1);
-
   const [companies, setCompanies] = useState<Companies[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
-  const [selectedIndustry, setSelectedIndustry] = useState("All");
-  const [selectedLocation, setSelectedLocation] = useState("All");
+  const [industry, setIndustry] = useState("All");
+  const [location, setLocation] = useState("All");
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -41,15 +42,12 @@ const CompaniesPage = () => {
         const res = await axiosInstance.get<PageableResponse<Companies>>(
           "/user/companie",
           {
-            params: {
-              page,
-              take: 9,
-            },
+            params: { page, take: 9 },
           },
         );
 
         setCompanies(res.data.data);
-        setMeta(res.data.meta); // 🔥 ini penting buat pagination
+        setMeta(res.data.meta);
       } catch (err) {
         console.error(err);
       } finally {
@@ -65,154 +63,166 @@ const CompaniesPage = () => {
       .toLowerCase()
       .includes(search.toLowerCase());
 
-    const matchesIndustry =
-      selectedIndustry === "All" || company.industry === selectedIndustry;
-
-    const matchesLocation =
-      selectedLocation === "All" || company.location === selectedLocation;
+    const matchesIndustry = industry === "All" || company.industry === industry;
+    const matchesLocation = location === "All" || company.location === location;
 
     return matchesSearch && matchesIndustry && matchesLocation;
   });
 
   return (
     <div className="bg-background min-h-screen">
-      {/* Header */}
-      <section className="bg-background py-12 md:py-16">
-        <div className="mx-auto max-w-7xl px-6 md:px-7">
-          <h1 className="text-foreground mb-2 text-3xl font-bold md:text-4xl">
-            All Companies
-          </h1>
-          <p className="text-muted-foreground">
-            Browse all registered companies on the platform.
-          </p>
+      <section className="container mx-auto px-6 pt-12 pb-6">
+        <h1 className="text-foreground mb-2 text-3xl font-bold md:text-4xl">
+          All Companies
+        </h1>
+        <p className="text-muted-foreground">
+          Browse all registered companies on the platform.
+        </p>
+      </section>
 
-          {/* Filters */}
-          <div className="mt-8 flex flex-col gap-4 md:flex-row">
-            <div className="relative flex-1">
-              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-              <Input
-                placeholder="Search company name..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="bg-background pl-10"
-              />
-            </div>
+      <div className="container mx-auto flex gap-6 px-6 pb-12">
+        {/* Sidebar */}
+        <aside className="bg-background sticky top-24 w-full max-w-sm space-y-5 self-start rounded-xl border p-5 shadow-sm">
+          <div>
+            <label className="flex items-center gap-2 text-sm font-semibold">
+              <Search className="h-4 w-4" />
+              Search
+            </label>
+            <Input
+              placeholder="Search company name..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+            />
+          </div>
 
+          <div>
+            <label className="text-sm font-semibold">Industry</label>
             <select
-              value={selectedIndustry}
-              onChange={(e) => setSelectedIndustry(e.target.value)}
-              className="border-input bg-background text-foreground rounded-md border px-4 py-2 text-sm"
+              value={industry}
+              onChange={(e) => {
+                setIndustry(e.target.value);
+                setPage(1);
+              }}
+              className="bg-background w-full rounded-md border px-3 py-2 text-sm"
             >
-              {industries.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry === "All" ? "All Industries" : industry}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="border-input bg-background text-foreground rounded-md border px-4 py-2 text-sm"
-            >
-              {locations.map((location) => (
-                <option key={location} value={location}>
-                  {location === "All" ? "All Locations" : location}
+              {industries.map((item) => (
+                <option key={item} value={item}>
+                  {item === "All" ? "All industries" : item}
                 </option>
               ))}
             </select>
           </div>
-        </div>
-      </section>
 
-      {/* Company Grid */}
-      <section className="mx-auto max-w-7xl px-6 py-10 md:px-7">
-        {loading && (
-          <p className="text-muted-foreground py-20 text-center">
-            Loading companies...
-          </p>
-        )}
+          <div>
+            <label className="text-sm font-semibold">Location</label>
+            <select
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                setPage(1);
+              }}
+              className="bg-background w-full rounded-md border px-3 py-2 text-sm"
+            >
+              {locations.map((item) => (
+                <option key={item} value={item}>
+                  {item === "All" ? "All locations" : item}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {!loading && (
-          <>
-            {filteredCompanies.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredCompanies.map((company) => (
-                  <div
-                    key={company.id}
-                    className="border-border bg-card flex flex-col gap-4 rounded-xl border p-6 transition-shadow duration-300 hover:shadow-lg"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="bg-primary/10 flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl">
-                        {company.logoPath ? (
-                          <img
-                            src={company.logoPath}
-                            alt={company.companyName}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-primary text-lg font-bold">
-                            {company.companyName.charAt(0)}
-                          </span>
-                        )}
-                      </div>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => {
+              setSearch("");
+              setIndustry("All");
+              setLocation("All");
+              setPage(1);
+            }}
+          >
+            Reset Filters
+          </Button>
+        </aside>
 
-                      <div className="min-w-0">
-                        <h3 className="text-foreground truncate text-lg font-bold">
-                          {company.companyName}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {company.industry}
-                        </p>
-                      </div>
-                    </div>
+        {/* Grid */}
+        <div className="flex-1">
+          {loading && (
+            <p className="text-muted-foreground py-20 text-center">
+              Loading companies...
+            </p>
+          )}
 
-                    <p className="text-muted-foreground line-clamp-2 text-sm">
-                      {company.description}
-                    </p>
-
-                    <div className="text-muted-foreground flex items-center gap-2 text-xs">
-                      <MapPin className="h-3.5 w-3.5" />
-                      {company.location}
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      className="mt-auto w-full cursor-pointer font-semibold"
-                      //   onClick={() => window.open(company.websiteUrl, "_blank")}
-                      onClick={() => {
-                        const url = company.websiteUrl.startsWith("http")
-                          ? company.websiteUrl
-                          : `https://${company.websiteUrl}`;
-
-                        window.open(url, "_blank");
-                      }}
+          {!loading && (
+            <>
+              {filteredCompanies.length > 0 ? (
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredCompanies.map((company) => (
+                    <Link
+                      key={company.id}
+                      href={`/companies/${company.id}`}
+                      className="border-border bg-card flex flex-col gap-4 rounded-xl border p-6 transition hover:shadow-lg"
                     >
-                      Visit Website
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="py-16 text-center">
-                <Building2 className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                <p className="text-muted-foreground">No companies found.</p>
-              </div>
-            )}
+                      <div className="flex items-center gap-4">
+                        <div className="bg-primary/10 flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl">
+                          {company.logoPath ? (
+                            <Image
+                              src={company.logoPath}
+                              alt={company.companyName}
+                              width={80}
+                              height={80}
+                              className="h-full w-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-primary text-lg font-bold">
+                              {company.companyName.charAt(0)}
+                            </span>
+                          )}
+                        </div>
 
-            {meta && (
-              <div className="mt-10 flex cursor-pointer justify-center">
-                <PaginationSection
-                  meta={meta}
-                  onClick={(newPage) => setPage(newPage)}
-                />
-              </div>
-            )}
-          </>
-        )}
-      </section>
+                        <div className="min-w-0">
+                          <h3 className="truncate text-lg font-bold">
+                            {company.companyName}
+                          </h3>
+                          <p className="text-muted-foreground text-sm">
+                            {company.industry}
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-muted-foreground line-clamp-2 text-sm">
+                        {company.description}
+                      </p>
+
+                      <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                        <MapPin className="h-3.5 w-3.5" />
+                        {company.location}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-16 text-center">
+                  <Building2 className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+                  <p className="text-muted-foreground">No companies found.</p>
+                </div>
+              )}
+
+              {meta && (
+                <div className="mt-10 flex cursor-pointer justify-center">
+                  <PaginationSection
+                    meta={meta}
+                    onClick={(newPage) => setPage(newPage)}
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default CompaniesPage;
+}

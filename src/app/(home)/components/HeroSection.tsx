@@ -6,7 +6,8 @@ const HeroSection = () => {
       {/* Decorative elements */}
       <div className="border-primary/20 absolute top-10 left-1/3 -z-10 h-32 w-32 rounded-full border" />
       <div className="bg-primary/40 absolute top-20 left-1/4 h-2 w-2 rounded-full" />
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 md:flex-row">
+      {/* <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 md:flex-row"> */}
+      <div className="container mx-auto flex flex-col items-center gap-8 md:flex-row">
         {/* Left content */}
         <div className="flex-1 space-y-6">
           <h1 className="text-foreground text-4xl leading-tight font-extrabold md:text-5xl lg:text-6xl">

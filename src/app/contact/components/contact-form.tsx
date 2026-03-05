@@ -91,7 +91,8 @@ export function ContactPage() {
 
   return (
     <main className="bg-background min-h-screen">
-      <div className="mx-auto max-w-7xl px-6 pt-24 pb-12">
+      {/* <div className="mx-auto max-w-7xl px-6 pt-24 pb-12"> */}
+      <div className="container mx-auto px-6 pt-24 pb-12">
         {/* Header */}
         <div className="mb-16 text-center">
           <h1 className="font-heading text-foreground text-4xl font-bold">

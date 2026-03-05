@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { LegalPage } from "./components/page";
+import { LegalPage } from "./components/legal-form";
 
 const Legal = () => {
   return (
